@@ -1,0 +1,44 @@
+@startuml
+' Auto-generated Entity-Relationship Diagram
+
+!theme vibrant
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity "Abrigo" as abrigo {
+  *id_abrigo : number <<PK>>
+  --
+  *nome : varchar
+  *capacidade_total : number
+  capacidade_atual : number
+  endereco : varchar
+}
+
+entity "Ocorrencia" as ocorrencia {
+  *id_ocorrencia : number <<PK>>
+  --
+  *tipo : varchar
+  *data_ocorrencia : date
+  regiao_afetada : varchar
+}
+
+entity "Pessoa" as pessoa {
+  *id_pessoa : number <<PK>>
+  --
+  *nome : varchar
+  telefone : varchar
+  documento : varchar
+  status : varchar
+  id_abrigo : number <<FK>>
+  id_ocorrencia : number <<FK>>
+}
+
+' Relationships
+abrigo ||--o{ pessoa : "possui"
+ocorrencia ||--o{ pessoa : "associada a"
+
+@enduml

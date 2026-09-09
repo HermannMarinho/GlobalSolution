@@ -1,0 +1,153 @@
+@startuml
+' Auto-generated PlantUML Class Diagram
+
+!theme vibrant
+hide empty members
+
+package "Model" {
+    class Abrigo {
+        - idAbrigo: Long
+        - nome: String
+        - capacidadeTotal: Integer
+        - capacidadeAtual: Integer
+        - endereco: String
+    }
+
+    class Ocorrencia {
+        - idOcorrencia: Long
+        - tipo: String
+        - dataOcorrencia: LocalDate
+        - regiaoAfetada: String
+    }
+
+    class Pessoa {
+        - idPessoa: Long
+        - nome: String
+        - telefone: String
+        - documento: String
+        - status: String
+        - idAbrigo: Long
+        - idOcorrencia: Long
+    }
+}
+
+package "DAO" {
+    class AbrigoDao {
+        + listarTodos(): List<Abrigo>
+        + buscarPorId(Long): Abrigo
+        + inserir(Abrigo): void
+        + atualizar(Abrigo): void
+        + deletar(Long): void
+    }
+
+    class OcorrenciaDao {
+        + listarTodas(): List<Ocorrencia>
+        + buscarPorId(Long): Ocorrencia
+        + inserir(Ocorrencia): void
+        + atualizar(Ocorrencia): void
+        + deletar(Long): void
+    }
+
+    class PessoaDao {
+        + listarTodas(): List<Pessoa>
+        + buscarPorId(Long): Pessoa
+        + inserir(Pessoa): void
+        + atualizar(Pessoa): void
+        + deletar(Long): void
+    }
+}
+
+package "Service" {
+    class AbrigoService {
+        - abrigoDao: AbrigoDao
+        + listarTodos(): List<Abrigo>
+        + buscarPorId(Long): Abrigo
+        + inserir(Abrigo): void
+        + atualizar(Abrigo): void
+        + deletar(Long): void
+    }
+
+    class OcorrenciaService {
+        - ocorrenciaDao: OcorrenciaDao
+        + listarTodas(): List<Ocorrencia>
+        + buscarPorId(Long): Ocorrencia
+        + inserir(Ocorrencia): void
+        + atualizar(Ocorrencia): void
+        + deletar(Long): void
+    }
+
+    class PessoaService {
+        - pessoaDao: PessoaDao
+        - abrigoDao: AbrigoDao
+        + listarTodas(): List<Pessoa>
+        + buscarPorId(Long): Pessoa
+        + inserir(Pessoa): void
+        + atualizar(Pessoa): void
+        + deletar(Long): void
+    }
+}
+
+package "Resource" {
+    class AbrigoResource {
+        - abrigoService: AbrigoService
+        - pessoaService: PessoaService
+        + listarTodos(): Response
+        + buscarPorId(Long): Response
+        + criar(Abrigo): Response
+        + atualizar(Long, Abrigo): Response
+        + deletar(Long): Response
+    }
+
+    class OcorrenciaResource {
+        - ocorrenciaService: OcorrenciaService
+        + listarTodas(): Response
+        + buscarPorId(Long): Response
+        + criar(Ocorrencia): Response
+        + atualizar(Long, Ocorrencia): Response
+        + deletar(Long): Response
+    }
+
+    class PessoaResource {
+        - pessoaService: PessoaService
+        + listarTodos(): Response
+        + buscarPorId(Long): Response
+        + criar(Pessoa): Response
+        + atualizar(Long, Pessoa): Response
+        + deletar(Long): Response
+    }
+}
+
+package "Config" {
+    class ApplicationConfig {
+    }
+    class CORSFilter {
+    }
+    class ConnectionFactory {
+    }
+}
+
+class Main {
+}
+
+
+' Relationships
+Pessoa "many" -- "1" Abrigo : ""
+Pessoa "many" -- "1" Ocorrencia : ""
+
+AbrigoResource .> AbrigoService
+AbrigoResource .> PessoaService
+OcorrenciaResource .> OcorrenciaService
+PessoaResource .> PessoaService
+
+AbrigoService .> AbrigoDao
+OcorrenciaService .> OcorrenciaDao
+PessoaService .> PessoaDao
+PessoaService .> AbrigoDao
+
+AbrigoDao .> ConnectionFactory
+OcorrenciaDao .> ConnectionFactory
+PessoaDao .> ConnectionFactory
+
+Main .> ApplicationConfig
+
+@enduml
